@@ -1,0 +1,23 @@
+'use client'
+
+import { useQuery } from '@tanstack/react-query'
+import useAuth from './useAuth'
+import useAxiosSecure from './useAxiosSecure'
+
+const useAdmin = (): readonly [boolean, boolean] => {
+  const { user, loading } = useAuth()
+  const axiosSecure = useAxiosSecure()
+
+  const { data: isAdmin = false, isPending } = useQuery<boolean>({
+    queryKey: [user?.email, 'isAdmin', user],
+    enabled: !loading && !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get<{ admin: boolean }>(`/users/admin/${user!.email}`)
+      return res.data.admin
+    },
+  })
+
+  return [isAdmin, isPending] as const
+}
+
+export default useAdmin
