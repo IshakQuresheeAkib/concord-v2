@@ -132,16 +132,17 @@ export const authOptions: AuthOptions = {
       // For Google sign in, create/update user in your backend
       if (account?.provider === 'google') {
         try {
+           console.log('Google user signed in:', user.email)
           // Send user data to your Express backend
-          await axios.post<BackendSignupResponse>(
-            `${API_URL}/api/auth/google-login`,
-            {
-              email: user.email,
-              name: user.name,
-              photoURL: user.image
-            },
-            { withCredentials: true }
-          )
+          // await axios.post<BackendSignupResponse>(
+          //   `${API_URL}/api/auth/google-login`,
+          //   {
+          //     email: user.email,
+          //     name: user.name,
+          //     photoURL: user.image
+          //   },
+          //   { withCredentials: true }
+          // )
         } catch (error) {
           console.error('Google sign in error:', error)
           return false

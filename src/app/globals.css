@@ -10,11 +10,16 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-primary: #008080;
+  --color-teal: #008080;
+  --color-light-teal: #00C4C4;
+  --color-dark-blue: #067eaa;
+  --color-surface: #F2F2F2;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ffffff;
     --foreground: #ededed;
   }
 }
