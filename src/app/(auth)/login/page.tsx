@@ -12,16 +12,14 @@ import { toast } from 'sonner'
 function LoginForm(): JSX.Element {
   const router = useRouter()
   const searchParams = useSearchParams()
-  console.log('searchParams: ', searchParams);
   const callbackUrl = searchParams.get('callbackUrl') ?? '/'
-  console.log('callbackUrl: ', callbackUrl);
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     setIsLoading(true)
-    console.log('hello world');
+    console.log('Entered handleLogin with email/password');
     const form = e.currentTarget
     const email = (form.elements.namedItem('email') as HTMLInputElement).value
     const password = (form.elements.namedItem('password') as HTMLInputElement).value
@@ -39,7 +37,6 @@ function LoginForm(): JSX.Element {
   }
 
   const handleGoogle = (): void => {
-    console.log('hi friend');
     signIn('google', { callbackUrl })
   }
 

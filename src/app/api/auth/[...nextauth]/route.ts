@@ -3,39 +3,17 @@ import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
 import { JWT } from 'next-auth/jwt'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '@/lib/firebase'
 
-// Backend API base URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// Extended user interface
 interface ExtendedUser extends User {
   role?: string
 }
 
-// Backend response types
-interface BackendLoginResponse {
-  user: {
-    _id: string
-    email: string
-    name: string
-    role: string
-    photoURL?: string
-  }
-}
-
-interface BackendSignupResponse {
-  user: {
-    _id: string
-    email: string
-    name: string
-    role: string
-  }
-}
-
-// NextAuth configuration
 export const authOptions: AuthOptions = {
   providers: [
-    // Google Provider (replaces googleLogIn from AuthProvider)
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -48,7 +26,7 @@ export const authOptions: AuthOptions = {
       }
     }),
 
-    // Credentials Provider (replaces logIn from AuthProvider)
+    // Email/Password (Firebase)
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -61,55 +39,79 @@ export const authOptions: AuthOptions = {
         }
 
         try {
-          // Call your Express backend (same as AuthProvider did)
-          const response = await axios.post<BackendLoginResponse>(
-            `${API_URL}/api/auth/login`,
-            {
-              email: credentials.email,
-              password: credentials.password
-            },
-            { withCredentials: true }
+          // Use Firebase to authenticate
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            credentials.email,
+            credentials.password
           )
 
-          if (response.data.user) {
+          const user = userCredential.user
+
+          if (user) {
             return {
-              id: response.data.user._id,
-              email: response.data.user.email,
-              name: response.data.user.name,
-              image: response.data.user.photoURL,
-              role: response.data.user.role,
+              id: user.uid,
+              email: user.email!,
+              name: user.displayName || user.email!,
+              image: user.photoURL,
             }
           }
 
           return null
-        } catch (error) {
-          console.error('Login error:', error)
-          return null
+        } catch (error: any) {
+          console.error('Firebase login error:', error.code, error.message)
+          
+          // Return user-friendly error messages
+          if (error.code === 'auth/wrong-password') {
+            throw new Error('Invalid email or password')
+          }
+          if (error.code === 'auth/user-not-found') {
+            throw new Error('No account found with this email')
+          }
+          if (error.code === 'auth/too-many-requests') {
+            throw new Error('Too many failed attempts. Try again later')
+          }
+          
+          throw new Error('Authentication failed')
         }
       }
     })
   ],
 
   callbacks: {
-    // JWT callback (manages token)
     async jwt({ token, user, account }: { token: JWT; user: ExtendedUser; account: any }) {
-      // Initial sign in
       if (user) {
         token.id = user.id
-        token.role = user.role
         token.email = user.email
         token.name = user.name
+        token.picture = user.image
 
-        // If Google login, send to backend
+        // Send to backend (same as your old code)
+        try {
+          await axios.post(
+            `${API_URL}/jwt`,
+            { email: user.email },
+            { withCredentials: true }
+          )
+          console.log('✅ JWT sent to backend')
+        } catch (error) {
+          console.error('❌ Failed to send JWT to backend:', error)
+        }
+
+        // For Google login, also create/update user in backend
         if (account?.provider === 'google') {
           try {
             await axios.post(
-              `${API_URL}/jwt`,
-              { email: user.email },
+              `${API_URL}/users`,
+              { 
+                name: user.name,
+                email: user.email 
+              },
               { withCredentials: true }
             )
+            console.log('✅ User synced to backend')
           } catch (error) {
-            console.error('JWT error:', error)
+            console.error('❌ Failed to sync user to backend:', error)
           }
         }
       }
@@ -117,38 +119,17 @@ export const authOptions: AuthOptions = {
       return token
     },
 
-    // Session callback (what client receives)
     async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
-        (session.user as ExtendedUser).role = token.role as string
         session.user.email = token.email as string
         session.user.name = token.name as string
+        session.user.image = token.picture as string
       }
       return session
     },
 
-    // Sign in callback
-    async signIn({ user, account }: { user: ExtendedUser; account: any }) {
-      // For Google sign in, create/update user in your backend
-      if (account?.provider === 'google') {
-        try {
-           console.log('Google user signed in:', user.email)
-          // Send user data to your Express backend
-          // await axios.post<BackendSignupResponse>(
-          //   `${API_URL}/api/auth/google-login`,
-          //   {
-          //     email: user.email,
-          //     name: user.name,
-          //     photoURL: user.image
-          //   },
-          //   { withCredentials: true }
-          // )
-        } catch (error) {
-          console.error('Google sign in error:', error)
-          return false
-        }
-      }
-      return true
+    async signIn({ user }: { user: ExtendedUser }) {
+      return true // Always allow sign in if Firebase authenticated
     }
   },
 
@@ -159,7 +140,7 @@ export const authOptions: AuthOptions = {
 
   session: {
     strategy: 'jwt',
-    // maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 
   secret: process.env.NEXTAUTH_SECRET,

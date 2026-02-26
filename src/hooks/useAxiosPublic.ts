@@ -1,5 +1,11 @@
-import { axiosPublic } from '@/lib/axios'
+import axios from "axios";
 
-const useAxiosPublic = () => axiosPublic
+const axiosPublic = axios.create({
+    baseURL:'https://concord-server.vercel.app',
+    withCredentials:true
+})
 
-export default useAxiosPublic
+const useAxiosPublic = () => {
+    return axiosPublic
+}
+export default useAxiosPublic;
