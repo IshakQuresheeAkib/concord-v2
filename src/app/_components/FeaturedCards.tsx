@@ -20,7 +20,7 @@ export default function FeaturedCards(): JSX.Element {
   const biodatas: Biodata[] = data?.data ?? []
 
   return (
-    <div className="my-36 2xl:mx-auto md:mx-8 relative">
+    <section className="my-36 2xl:mx-auto md:mx-8 relative">
       <Heading>Featured Biodata</Heading>
       <Image
         src="https://i.ibb.co/CzbNRYg/Untitled-designaaa-1.png"
@@ -38,6 +38,6 @@ export default function FeaturedCards(): JSX.Element {
           <BiodataCard biodata={biodata} key={biodata._id} />
         ))}
       </div>
-    </div>
+    </section>
   )
 }

@@ -5,6 +5,7 @@ import SessionProvider from '@/components/providers/SessionProvider'
 import QueryProvider from '@/components/providers/QueryProvider'
 import { JSX } from 'react'
 import Navbar from '@/components/ui/Shared/Navbar/Navbar'
+import Footer from '@/components/ui/Shared/Footer/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,6 +26,7 @@ export default function RootLayout({
           <QueryProvider>
             <Navbar />
             {children}
+            <Footer />
           </QueryProvider>
         </SessionProvider>
       </body>

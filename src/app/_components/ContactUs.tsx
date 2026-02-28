@@ -30,7 +30,7 @@ export default function ContactUs(): JSX.Element {
     'w-full bg-gray text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline'
 
   return (
-    <div className="flex justify-center items-center mx-auto sm:w-[90%] mb-52 mt-24" data-aos="fade-up">
+    <section className="flex justify-center items-center mx-auto sm:w-[90%] mb-52 mt-24" data-aos="fade-up">
       <div className="container mx-auto my-4 px-4 2xl:px-20">
 
         <div className="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-xl">
@@ -113,6 +113,6 @@ export default function ContactUs(): JSX.Element {
         </div>
 
       </div>
-    </div>
+    </section>
   )
 }

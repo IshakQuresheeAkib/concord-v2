@@ -54,7 +54,7 @@ export default function Navbar() {
   const closeMenu = (): void => setMenuOpen(false);
 
   // Tailwind logic for headroom effect
-  const headerClass = `fixed top-0 z-50 w-full transition-transform duration-300 ease-in-out ${
+  const headerClass = `fixed top-0 z-50 w-full transition-transform duration-300 ease-in-out text-black/80 ${
     scrollDirection === 'down' ? '-translate-y-full' : 'translate-y-0'
   }`;
 
