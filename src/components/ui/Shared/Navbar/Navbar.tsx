@@ -12,7 +12,7 @@ import PrimaryBtn from '../Button/PrimaryBtn'; // Adjust path
 import UserDropdown from './UserDropdown';
 import concordLogo from '@/assets/Concord.png'; // Adjust path
 import './navbar.css';
-import useAuth from '@/hooks/useAuth';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Loader from '../Loader/Loader';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import './navbar.css';
@@ -31,7 +31,7 @@ const navbarItems1: NavbarItem[] = [
 ];
 
 export default function Navbar() {
-  const { user, logOut, loading } = useAuth();
+  const { user, logOut, loading } = useCurrentUser();
   const pathname = usePathname();
   const router = useRouter();
   

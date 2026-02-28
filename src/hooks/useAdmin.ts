@@ -1,11 +1,11 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import useAuth from './useAuth'
+import { useCurrentUser } from './useCurrentUser'
 import useAxiosSecure from './useAxiosSecure'
 
 const useAdmin = (): readonly [boolean, boolean] => {
-  const { user, loading } = useAuth()
+  const { user, loading } = useCurrentUser()
   const axiosSecure = useAxiosSecure()
 
   const { data: isAdmin = false, isPending } = useQuery<boolean>({

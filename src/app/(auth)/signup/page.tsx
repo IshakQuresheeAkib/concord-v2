@@ -1,8 +1,6 @@
 'use client'
 
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { FirebaseError } from 'firebase/app'
-import { auth } from '@/lib/firebase'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -14,12 +12,7 @@ import { CgProfile } from 'react-icons/cg'
 import { FaCloudUploadAlt } from 'react-icons/fa'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import Heading from '@/components/ui/Shared/Heading/Heading'
-import { axiosPublic } from '@/lib/axios'
-import uploadToImagebb from '@/hooks/useImagebb'
-
-interface BackendUserResponse {
-  insertedId?: string
-}
+import { registerUser } from '@/lib/authService'
 
 const validatePassword = (password: string): boolean => {
   if (!/(?=.*[!#$%&?^*@~() "])/.test(password)) {
@@ -60,22 +53,31 @@ export default function SignupPage(): JSX.Element {
     setIsLoading(true)
 
     try {
-      const imageUrl = await uploadToImagebb(imageFiles[0])
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      await updateProfile(userCredential.user, { displayName: name, photoURL: imageUrl })
+      const { idToken, name: displayName, email: userEmail, image, isNewUser } = await registerUser({
+        name,
+        email,
+        password,
+        imageFile: imageFiles[0],
+      })
 
-      const result = await signIn('credentials', { email, password, redirect: false })
+      const result = await signIn('credentials', {
+        idToken,
+        name: displayName,
+        email: userEmail,
+        image,
+        redirect: false,
+      })
+
       if (!result?.ok) {
         toast.error('Account created but auto-login failed. Please log in.')
         router.push('/login')
         return
       }
 
-      const { data } = await axiosPublic.post<BackendUserResponse>('/users', { name, email })
       form.reset()
       setImageName('')
 
-      if (data.insertedId) {
+      if (isNewUser) {
         toast.success('Account created successfully!')
       } else {
         toast.error('User already exists!')
