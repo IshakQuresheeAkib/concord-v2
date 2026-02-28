@@ -1,4 +1,4 @@
-import NextAuth, { AuthOptions, User, Session } from 'next-auth'
+import NextAuth, { Account, AuthOptions, User, Session } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
@@ -68,7 +68,8 @@ export const authOptions: AuthOptions = {
             name: user.displayName || user.email!,
             image: user.photoURL,
           }
-        } catch (error: any) {
+        } catch (err: unknown) {
+          const error = err as { code: string; message: string }
           console.error('Firebase login error:', error.code, error.message)
 
           if (error.code === 'auth/invalid-credential') {
@@ -88,7 +89,7 @@ export const authOptions: AuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user, account }: { token: JWT; user: User; account: any }) {
+    async jwt({ token, user, account }: { token: JWT; user: User; account: Account | null }) {
       if (user) {
         token.id = user.id
         token.email = user.email

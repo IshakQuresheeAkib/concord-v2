@@ -46,7 +46,7 @@ export default function Navbar() {
     try {
       await logOut();
       enqueueSnackbar('Logged Out Successfully!', { variant: 'success' });
-    } catch (error) {
+    } catch {
       enqueueSnackbar('Logout failed', { variant: 'error' });
     }
   };
