@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { FiPhoneCall } from 'react-icons/fi'
 import { HiOutlineBuildingOffice2 } from 'react-icons/hi2'
 import Heading from '@/components/ui/Shared/Heading/Heading'
+import InputField from '@/components/ui/Shared/InputField/InputField'
 import { sendContactEmail, type ContactEmailParams } from '@/lib/emailService'
 
 export default function ContactUs(): JSX.Element {
@@ -26,9 +27,6 @@ export default function ContactUs(): JSX.Element {
     }
   }
 
-  const inputClass =
-    'w-full bg-gray text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline'
-
   return (
     <section className="flex justify-center items-center mx-auto sm:w-[90%] mb-52 mt-24" data-aos="fade-up">
       <div className="container mx-auto my-4 px-4 2xl:px-20">
@@ -39,30 +37,26 @@ export default function ContactUs(): JSX.Element {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
-              <input
+            <div className="grid grid-cols-1 gap-7 md:grid-cols-2 mt-7">
+              <InputField
                 {...register('from_name', { required: true })}
                 type="text"
-                placeholder="First Name*"
-                className={inputClass}
+                label="First Name"
               />
-              <input
+              <InputField
                 {...register('last_name', { required: true })}
                 type="text"
-                placeholder="Last Name*"
-                className={inputClass}
+                label="Last Name"
               />
-              <input
+              <InputField
                 {...register('from_email', { required: true })}
                 type="email"
-                placeholder="Email*"
-                className={inputClass}
+                label="Email"
               />
-              <input
+              <InputField
                 {...register('phone', { required: true })}
                 type="tel"
-                placeholder="Phone*"
-                className={inputClass}
+                label="Phone"
               />
             </div>
 

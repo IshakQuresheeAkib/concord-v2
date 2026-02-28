@@ -12,6 +12,7 @@ import { CgProfile } from 'react-icons/cg'
 import { FaCloudUploadAlt } from 'react-icons/fa'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import Heading from '@/components/ui/Shared/Heading/Heading'
+import InputField from '@/components/ui/Shared/InputField/InputField'
 import { registerUser } from '@/lib/authService'
 
 const validatePassword = (password: string): boolean => {
@@ -134,44 +135,41 @@ export default function SignupPage(): JSX.Element {
         </div>
 
         <form onSubmit={handleRegister}>
-          <div className="relative my-5">
-            <input
+          <div className="my-5">
+            <InputField
               name="name"
-              required
-              className="w-full bg-surface p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal/40"
               type="text"
-              placeholder="Name"
-            />
-            <CgProfile className="absolute right-3 bottom-4 text-lg text-gray-400 pointer-events-none" />
-          </div>
-
-          <div className="relative">
-            <input
-              name="email"
+              label="Name"
               required
-              className="w-full bg-surface p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal/40"
-              type="email"
-              placeholder="Email"
+              endAdornment={<CgProfile className="text-lg text-gray-400 pointer-events-none" />}
             />
-            <MdOutlineAlternateEmail className="absolute right-3 bottom-4 text-lg text-gray-400 pointer-events-none" />
           </div>
 
-          <div className="relative my-5">
-            <input
+          <InputField
+            name="email"
+            type="email"
+            label="Email"
+            required
+            endAdornment={<MdOutlineAlternateEmail className="text-lg text-gray-400 pointer-events-none" />}
+          />
+
+          <div className="my-5">
+            <InputField
               name="password"
-              required
-              className="w-full bg-surface p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal/40"
               type={isVisible ? 'text' : 'password'}
-              placeholder="Password"
+              label="Password"
+              required
+              endAdornment={
+                <button
+                  type="button"
+                  className="text-lg text-gray-400 cursor-pointer"
+                  onClick={() => setIsVisible(v => !v)}
+                  aria-label={isVisible ? 'Hide password' : 'Show password'}
+                >
+                  {isVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                </button>
+              }
             />
-            <button
-              type="button"
-              className="absolute right-3 bottom-4 text-lg text-gray-400 cursor-pointer"
-              onClick={() => setIsVisible(v => !v)}
-              aria-label={isVisible ? 'Hide password' : 'Show password'}
-            >
-              {isVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-            </button>
           </div>
 
           <label className="w-40 text-center block">

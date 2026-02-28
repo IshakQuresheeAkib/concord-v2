@@ -8,6 +8,7 @@ import { FcGoogle } from 'react-icons/fc'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { toast } from 'sonner'
+import InputField from '@/components/ui/Shared/InputField/InputField'
 
 function LoginForm(): JSX.Element {
   const router = useRouter()
@@ -64,33 +65,31 @@ function LoginForm(): JSX.Element {
         </div>
 
         <form onSubmit={handleLogin}>
-          <div className="relative">
-            <input
-              className="w-full bg-surface text-gray-900 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal/40"
-              type="email"
-              placeholder="Email"
-              name="email"
-              required
-            />
-            <MdOutlineAlternateEmail className="absolute right-3 bottom-4 text-lg text-gray-400 pointer-events-none" />
-          </div>
+          <InputField
+            type="email"
+            name="email"
+            label="Email"
+            required
+            endAdornment={<MdOutlineAlternateEmail className="text-lg text-gray-400 pointer-events-none" />}
+          />
 
-          <div className="relative my-6">
-            <input
-              className="w-full bg-surface text-gray-900 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal/40"
+          <div className="my-6">
+            <InputField
               type={isVisible ? 'text' : 'password'}
               name="password"
-              placeholder="Password"
+              label="Password"
               required
+              endAdornment={
+                <button
+                  type="button"
+                  className="text-lg text-gray-400 cursor-pointer"
+                  onClick={() => setIsVisible(v => !v)}
+                  aria-label={isVisible ? 'Hide password' : 'Show password'}
+                >
+                  {isVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                </button>
+              }
             />
-            <button
-              type="button"
-              className="absolute right-3 bottom-4 text-lg text-gray-400 cursor-pointer"
-              onClick={() => setIsVisible(v => !v)}
-              aria-label={isVisible ? 'Hide password' : 'Show password'}
-            >
-              {isVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-            </button>
           </div>
 
           <button
