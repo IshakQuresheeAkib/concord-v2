@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const IMAGE_HOSTING_API = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_HOSTING_KEY}`
+const IMAGE_HOSTING_API = `${process.env.IMAGE_HOSTING_API_URL}`
 
-const useImagebb = async (image: File | Blob): Promise<string> => {
+const uploadToImagebb = async (image: File | Blob): Promise<string> => {
   const formData = new FormData()
   formData.append('image', image)
 
@@ -13,4 +13,4 @@ const useImagebb = async (image: File | Blob): Promise<string> => {
   return res.data.data.display_url
 }
 
-export default useImagebb
+export default uploadToImagebb

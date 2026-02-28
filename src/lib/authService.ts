@@ -5,7 +5,7 @@ import {
 } from 'firebase/auth'
 import { auth } from '@/lib/firebase'
 import { axiosPublic } from '@/lib/axios'
-import uploadToImagebb from '@/hooks/useImagebb'
+import uploadToImagebb from '@/lib/uploadToImagebb'
 
 export interface RegisterParams {
   name: string

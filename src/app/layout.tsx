@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import SessionProvider from '@/components/providers/SessionProvider'
 import QueryProvider from '@/components/providers/QueryProvider'
-import { JSX } from 'react'
+import { JSX, type ReactNode } from 'react'
 import Navbar from '@/components/ui/Shared/Navbar/Navbar'
 import Footer from '@/components/ui/Shared/Footer/Footer'
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: ReactNode
 }): JSX.Element {
   return (
     <html lang="en">
