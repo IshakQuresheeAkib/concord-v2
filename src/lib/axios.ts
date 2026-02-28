@@ -34,13 +34,9 @@ axiosSecure.interceptors.request.use(
 // Add response interceptor for error handling
 axiosSecure.interceptors.response.use(
   (response) => response,
-  async (error) => {
+  (error) => {
     if (error.response?.status === 401) {
       console.error('Unauthorized - Session expired')
-      // Redirect to login
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login'
-      }
     }
     return Promise.reject(error)
   }
