@@ -89,7 +89,7 @@ export default function Navbar() {
           
           <div className="mr-5">
             {loading ? (
-              <Loader width="28" height="true" />
+              <Loader width={7} height="auto" />
             ) : user ? (
               <UserDropdown 
                 photoURL={user.image} 

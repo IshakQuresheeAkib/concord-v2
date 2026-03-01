@@ -203,7 +203,7 @@ export default function BiodatasPage(): JSX.Element {
           {/* Cards grid */}
           <div className="flex gap-8 flex-wrap justify-center mx-auto items-start">
             {isPending ? (
-              <Loader width="52" height="96" />
+              <Loader width={13} height="24rem" />
             ) : biodatas.length > 0 ? (
               biodatas.map((biodata) => (
                 <BiodataCard key={biodata._id} biodata={biodata} />
