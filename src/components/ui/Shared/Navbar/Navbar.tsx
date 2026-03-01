@@ -7,11 +7,9 @@ import { stack as Menu } from 'react-burger-menu';
 import { enqueueSnackbar } from 'notistack';
 import { MdLogout } from 'react-icons/md';
 import Image from 'next/image';
-
-import PrimaryBtn from '../Button/PrimaryBtn'; // Adjust path
+import PrimaryBtn from '../Button/PrimaryBtn';
 import UserDropdown from './UserDropdown';
-import concordLogo from '@/assets/Concord.png'; // Adjust path
-import './navbar.css';
+import concordLogo from '@/assets/Concord.png';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Loader from '../Loader/Loader';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
@@ -46,7 +44,7 @@ export default function Navbar() {
     try {
       await logOut();
       enqueueSnackbar('Logged Out Successfully!', { variant: 'success' });
-    } catch (error) {
+    } catch {
       enqueueSnackbar('Logout failed', { variant: 'error' });
     }
   };

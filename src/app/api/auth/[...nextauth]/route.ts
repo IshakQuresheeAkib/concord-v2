@@ -1,9 +1,10 @@
-import NextAuth, { AuthOptions, User, Session } from 'next-auth'
+import NextAuth, { AuthOptions, User, Session, Account } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
 import { JWT } from 'next-auth/jwt'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import { FirebaseError } from 'firebase/app'
 import { auth } from '@/lib/firebase'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -68,17 +69,19 @@ export const authOptions: AuthOptions = {
             name: user.displayName || user.email!,
             image: user.photoURL,
           }
-        } catch (error: any) {
-          console.error('Firebase login error:', error.code, error.message)
+        } catch (error) {
+          if (error instanceof FirebaseError) {
+            console.error('Firebase login error:', error.code, error.message)
 
-          if (error.code === 'auth/invalid-credential') {
-            throw new Error('Invalid email or password')
-          }
-          if (error.code === 'auth/user-not-found') {
-            throw new Error('No account found with this email')
-          }
-          if (error.code === 'auth/too-many-requests') {
-            throw new Error('Too many failed attempts. Try again later')
+            if (error.code === 'auth/invalid-credential') {
+              throw new Error('Invalid email or password')
+            }
+            if (error.code === 'auth/user-not-found') {
+              throw new Error('No account found with this email')
+            }
+            if (error.code === 'auth/too-many-requests') {
+              throw new Error('Too many failed attempts. Try again later')
+            }
           }
 
           throw new Error('Authentication failed')
@@ -88,7 +91,7 @@ export const authOptions: AuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user, account }: { token: JWT; user: User; account: any }) {
+    async jwt({ token, user, account }: { token: JWT; user: User; account: Account | null }) {
       if (user) {
         token.id = user.id
         token.email = user.email
