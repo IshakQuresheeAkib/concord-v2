@@ -2,11 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useCurrentUser } from './useCurrentUser'
-import useAxiosSecure from './useAxiosSecure'
+import { axiosSecure } from '@/lib/axios'
 
 const useAdmin = (): readonly [boolean, boolean] => {
   const { user, loading } = useCurrentUser()
-  const axiosSecure = useAxiosSecure()
 
   const { data: isAdmin = false, isPending } = useQuery<boolean>({
     queryKey: [user?.email, 'isAdmin', user],

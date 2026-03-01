@@ -2,7 +2,7 @@
 
 import { useSession, signOut as nextAuthSignOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import useAxiosSecure from './useAxiosSecure'
+import { axiosSecure } from '@/lib/axios'
 
 interface CurrentUser {
   id?: string
@@ -22,7 +22,6 @@ interface UseCurrentUserReturn {
 export function useCurrentUser(): UseCurrentUserReturn {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const axiosSecure = useAxiosSecure()
   
   const logOut = async (): Promise<void> => {
     try {

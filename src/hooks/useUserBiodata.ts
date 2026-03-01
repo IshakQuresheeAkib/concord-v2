@@ -3,12 +3,11 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
 import type { Biodata } from '@/types/biodata'
+import { axiosSecure } from '@/lib/axios'
 import { useCurrentUser } from './useCurrentUser'
-import useAxiosSecure from './useAxiosSecure'
 
 const useUserBiodata = (): readonly [Biodata | undefined, () => Promise<void>, boolean] => {
   const { user } = useCurrentUser()
-  const axiosSecure = useAxiosSecure()
 
   const { data, refetch: _refetch, isLoading } = useQuery<AxiosResponse<Biodata>>({
     queryKey: ['userBiodata', user?.email, user],

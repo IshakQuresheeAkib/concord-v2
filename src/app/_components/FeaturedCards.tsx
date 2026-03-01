@@ -5,13 +5,11 @@ import type { AxiosResponse } from 'axios'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import type { Biodata } from '@/types/biodata'
+import { axiosSecure } from '@/lib/axios'
 import BiodataCard from '@/components/ui/Shared/BiodataCard/BiodataCard'
 import Heading from '@/components/ui/Shared/Heading/Heading'
-import useAxiosSecure from '@/hooks/useAxiosSecure'
 
 export default function FeaturedCards(): JSX.Element {
-  const axiosSecure = useAxiosSecure()
-
   const { data } = useQuery<AxiosResponse<Biodata[]>>({
     queryKey: ['premiumBiodatas'],
     queryFn: () => axiosSecure.get<Biodata[]>('/biodatas-premium'),
