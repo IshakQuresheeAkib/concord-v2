@@ -24,8 +24,8 @@ interface NavbarItem {
 const navbarItems1: NavbarItem[] = [
   { id: 1, title: 'Home', link: '/' },
   { id: 2, title: 'Biodatas', link: '/biodatas' },
-  { id: 4, title: 'FAQ', link: '/faq' },
-  { id: 5, title: 'About Us', link: '/about-us' },
+  { id: 3, title: 'FAQ', link: '/faq' },
+  { id: 4, title: 'About Us', link: '/about-us' },
 ];
 
 export default function Navbar() {

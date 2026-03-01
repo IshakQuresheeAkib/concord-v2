@@ -2,11 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useCurrentUser } from './useCurrentUser'
-import useAxiosPublic from './useAxiosPublic'
+import { axiosPublic } from '@/lib/axios'
 
 const usePremium = (): readonly [boolean, boolean] => {
   const { user } = useCurrentUser()
-  const axiosPublic = useAxiosPublic()
 
   const { data: isPremium = false, isPending: premiumPending } = useQuery<boolean>({
     queryKey: [user?.email, 'isPremium', user],

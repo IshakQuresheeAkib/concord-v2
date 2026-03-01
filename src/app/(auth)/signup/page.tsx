@@ -114,7 +114,7 @@ export default function SignupPage(): JSX.Element {
       <div className="w-full xl:p-10 p-5 rounded-lg shadow-lg overflow-hidden border my-5 border-black/5 max-w-sm md:max-w-lg">
         <Heading>Get started today!</Heading>
         <p className="text-sm text-center mt-5">
-          Log in to your account to access your personalized dashboard, view your saved cars, and continue your car-buying journey.
+          Create your profile to discover compatible matches, connect with potential partners, and continue your matrimonial journey with confidence.
         </p>
 
         <button
