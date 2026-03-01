@@ -1,0 +1,13 @@
+.biodata-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.biodata-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 128, 128, 0.15);
+}
+
+.biodata-card-btn:hover {
+  background-color: #008080;
+  color: #ffffff;
+}
