@@ -23,7 +23,9 @@ export const axiosSecure = axios.create({
 // Add request interceptor for debugging
 axiosSecure.interceptors.request.use(
   (config) => {
-    console.log('API Request:', config.method?.toUpperCase(), config.url)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('API Request:', config.method?.toUpperCase(), config.url)
+    }
     return config
   },
   (error) => {

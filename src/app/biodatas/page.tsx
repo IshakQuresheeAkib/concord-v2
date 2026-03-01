@@ -50,7 +50,6 @@ export default function BiodatasPage(): JSX.Element {
       return res.data
     },
   })
-  console.log('biodatas: ', biodatas);
 
   const filterControls = (
     <div className="flex flex-col gap-6">
